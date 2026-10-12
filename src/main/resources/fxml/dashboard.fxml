@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: transparent;"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.parcauto.controller.DashboardController">
+    <VBox spacing="20">
+
+        <!-- ===================== CARTES KPI ===================== -->
+        <HBox spacing="16">
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <Label text="TOTAL VÉHICULES" styleClass="kpi-title" />
+                <Label fx:id="lblTotalVehicules" text="0" styleClass="kpi-value" />
+                <Label text="Flotte inventoriée" styleClass="kpi-subtitle" />
+            </VBox>
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <Label text="DISPONIBLES" styleClass="kpi-title" />
+                <Label fx:id="lblDisponibles" text="0" styleClass="kpi-value" />
+                <Label text="Prêts à être affectés" styleClass="kpi-subtitle" />
+            </VBox>
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <Label text="EN SERVICE" styleClass="kpi-title" />
+                <Label fx:id="lblEnService" text="0" styleClass="kpi-value" />
+                <Label text="En mission actuellement" styleClass="kpi-subtitle" />
+            </VBox>
+            <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <Label text="EN ENTRETIEN" styleClass="kpi-title" />
+                <Label fx:id="lblEnEntretien" text="0" styleClass="kpi-value" />
+                <Label text="Immobilisés à l'atelier" styleClass="kpi-subtitle" />
+            </VBox>
+        </HBox>
+
+        <!-- ===================== BANNIÈRE D'ALERTE ===================== -->
+        <VBox fx:id="alertBox" styleClass="alert-banner-danger" spacing="4" managed="false" visible="false">
+            <Label fx:id="lblAlerteTitre" text="Documents à surveiller" style="-fx-font-weight: bold; -fx-text-fill: #202020;" />
+            <Label fx:id="lblAlerteDetail" text="" wrapText="true" style="-fx-text-fill: #303030; -fx-font-size: 14px;" />
+        </VBox>
+
+        <!-- ===================== GRAPHIQUE + LISTE DOCUMENTS ===================== -->
+        <HBox spacing="16">
+            <VBox styleClass="card-panel" spacing="8" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <Label text="Répartition des statuts de la flotte" styleClass="section-title" />
+                <PieChart fx:id="pieChartStatuts" legendVisible="true" labelsVisible="true" prefHeight="280" animated="false" />
+            </VBox>
+
+            <VBox styleClass="card-panel" spacing="10" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+                <Label text="Documents arrivant à échéance (30 jours)" styleClass="section-title" />
+                <VBox fx:id="documentsAlertBox" spacing="10">
+                    <padding>
+                        <Insets top="4" />
+                    </padding>
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,16 @@
+target/
+*.class
+hs_err_pid*
+replay_pid*
+.idea/
+*.iml
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.env
+.env.*
+!.env.example
+*.log
+
+.DS_Store
+Thumbs.db

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="16" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.parcauto.controller.AffectationController">
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="txtRecherche" promptText="Rechercher par immatriculation ou nom du conducteur..." HBox.hgrow="ALWAYS" />
+        <Button text="Effacer" styleClass="btn-secondary" onAction="#effacerRecherche" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Nouvelle affectation" styleClass="btn-success" onAction="#ouvrirFormulaireAjout" />
+        <Button text="Modifier" styleClass="btn-warning" onAction="#ouvrirFormulaireModification" />
+        <Button text="Supprimer" styleClass="btn-danger" onAction="#supprimerAffectation" />
+    </HBox>
+
+    <Label fx:id="lblCompteur" text="0 affectation(s)" style="-fx-text-fill: #686868; -fx-font-size: 14px;" />
+
+    <TableView fx:id="tableAffectations" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colVehicule" text="Véhicule" prefWidth="150" />
+            <TableColumn fx:id="colConducteur" text="Conducteur" prefWidth="150" />
+            <TableColumn fx:id="colDateDebut" text="Date début" prefWidth="100" />
+            <TableColumn fx:id="colDateFin" text="Date fin" prefWidth="100" />
+            <TableColumn fx:id="colStatutAffectation" text="Statut" prefWidth="100" />
+            <TableColumn fx:id="colRemarque" text="Remarque" prefWidth="180" />
+        </columns>
+    </TableView>
+
+</VBox>

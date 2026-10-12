@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="16" stylesheets="@../css/style.css" style="-fx-background-color: white; -fx-padding: 24;"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.parcauto.controller.EntretienFormController">
+
+    <Label fx:id="lblTitreFormulaire" text="Ajouter un entretien" styleClass="form-section-title" style="-fx-font-size: 20px;" />
+    <Label text="Les champs marqués * sont obligatoires." style="-fx-text-fill: #686868; -fx-font-size: 13px;" />
+
+    <GridPane hgap="16" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50" />
+            <ColumnConstraints percentWidth="50" />
+        </columnConstraints>
+
+        <Label text="Véhicule *" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <ComboBox fx:id="cmbVehicule" maxWidth="Infinity" promptText="Choisir un véhicule" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+
+        <Label text="Type d'entretien *" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+        <ComboBox fx:id="cmbType" maxWidth="Infinity" promptText="Choisir un type" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="Date *" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <DatePicker fx:id="datePickerDate" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+
+        <Label text="Kilométrage" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+        <TextField fx:id="txtKilometrage" promptText="Ex : 60000" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+        <Label text="Coût (Ar) *" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+        <TextField fx:id="txtCout" promptText="Ex : 250000" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+    </GridPane>
+
+    <Label text="Description" styleClass="form-label" />
+    <TextArea fx:id="txtDescription" promptText="Détail de l'intervention..." prefRowCount="3" wrapText="true" />
+
+    <Label fx:id="lblErreur" text="" wrapText="true" style="-fx-text-fill: #202020; -fx-font-size: 14px; -fx-font-weight: bold;" />
+
+    <Region VBox.vgrow="ALWAYS" />
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annuler" styleClass="btn-secondary" onAction="#annuler" />
+        <Button text="Enregistrer" styleClass="btn-primary" onAction="#enregistrer" />
+    </HBox>
+
+    <padding>
+        <Insets top="4" right="4" bottom="4" left="4" />
+    </padding>
+</VBox>
