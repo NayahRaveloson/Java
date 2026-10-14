@@ -39,16 +39,42 @@ public final class DatabaseConnection {
                 if (!tablesExistent()) {
                     initialiserBase();
                 }
+                assurerColonnesIntervention();
             } catch (SQLException | IOException e) {
                 throw new RuntimeException(
                         "Impossible de se connecter à MySQL.\n" +
                         "Vérifiez que :\n" +
-                        "  1) le serveur MySQL est démarré (WAMP/XAMPP ou service MySQL),\n" +
+                        "  1) le serveur MySQL est démarré sur Wamp,\n" +
                         "  2) l'utilisateur/mot de passe dans DatabaseConnection.java sont corrects,\n" +
                         "  3) le pilote MySQL (mysql-connector-j) est bien dans le classpath.", e);
             }
         }
         return connection;
+    }
+
+    private static void assurerColonnesIntervention() throws SQLException {
+        boolean statutAvantEntretienExiste;
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("SHOW COLUMNS FROM vehicules LIKE 'statut_avant_entretien'")) {
+            statutAvantEntretienExiste = rs.next();
+        }
+        if (!statutAvantEntretienExiste) {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate("ALTER TABLE vehicules ADD COLUMN statut_avant_entretien VARCHAR(20)");
+            }
+        }
+
+        boolean etatInterventionExiste;
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("SHOW COLUMNS FROM entretiens LIKE 'etat_intervention'")) {
+            etatInterventionExiste = rs.next();
+        }
+        if (!etatInterventionExiste) {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate("ALTER TABLE entretiens ADD COLUMN etat_intervention " +
+                        "VARCHAR(30) NOT NULL DEFAULT 'Entretien terminé'");
+            }
+        }
     }
 
     private static void creerBaseSiAbsente() throws SQLException {

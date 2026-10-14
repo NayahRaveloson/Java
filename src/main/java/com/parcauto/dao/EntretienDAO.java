@@ -14,7 +14,7 @@ public class EntretienDAO {
 
     private static final String SELECT_BASE =
             "SELECT e.id_entretien, e.id_vehicule, v.immatriculation, " +
-            "e.type_entretien, e.date_entretien, e.kilometrage, e.cout, e.description " +
+            "e.type_entretien, e.etat_intervention, e.date_entretien, e.kilometrage, e.cout, e.description " +
             "FROM entretiens e " +
             "JOIN vehicules v ON v.id_vehicule = e.id_vehicule ";
 
@@ -50,9 +50,21 @@ public class EntretienDAO {
         return liste;
     }
 
+    public int compterReparationsEnCours(int idVehicule) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM entretiens WHERE id_vehicule = ? AND etat_intervention = ?";
+        Connection conn = DatabaseConnection.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idVehicule);
+            stmt.setString(2, "Réparation en cours");
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        }
+    }
+
     public void ajouter(Entretien e) throws SQLException {
-        String sql = "INSERT INTO entretiens (id_vehicule, type_entretien, date_entretien, kilometrage, cout, description) " +
-                "VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO entretiens (id_vehicule, type_entretien, etat_intervention, date_entretien, kilometrage, cout, description) " +
+                "VALUES (?,?,?,?,?,?,?)";
         Connection conn = DatabaseConnection.getConnection();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             remplirParametres(stmt, e);
@@ -61,12 +73,12 @@ public class EntretienDAO {
     }
 
     public void modifier(Entretien e) throws SQLException {
-        String sql = "UPDATE entretiens SET id_vehicule=?, type_entretien=?, date_entretien=?, " +
+        String sql = "UPDATE entretiens SET id_vehicule=?, type_entretien=?, etat_intervention=?, date_entretien=?, " +
                 "kilometrage=?, cout=?, description=? WHERE id_entretien=?";
         Connection conn = DatabaseConnection.getConnection();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             remplirParametres(stmt, e);
-            stmt.setInt(7, e.getIdEntretien());
+            stmt.setInt(8, e.getIdEntretien());
             stmt.executeUpdate();
         }
     }
@@ -92,14 +104,15 @@ public class EntretienDAO {
     private void remplirParametres(PreparedStatement stmt, Entretien e) throws SQLException {
         stmt.setInt(1, e.getIdVehicule());
         stmt.setString(2, e.getTypeEntretien());
-        stmt.setString(3, e.getDateEntretien());
-        stmt.setInt(4, e.getKilometrage());
-        stmt.setDouble(5, e.getCout());
-        stmt.setString(6, e.getDescription());
+        stmt.setString(3, e.getEtatIntervention());
+        stmt.setString(4, e.getDateEntretien());
+        stmt.setInt(5, e.getKilometrage());
+        stmt.setDouble(6, e.getCout());
+        stmt.setString(7, e.getDescription());
     }
 
     private Entretien mapperLigne(ResultSet rs) throws SQLException {
-        return new Entretien(
+        Entretien entretien = new Entretien(
                 rs.getInt("id_entretien"),
                 rs.getInt("id_vehicule"),
                 rs.getString("immatriculation"),
@@ -109,5 +122,7 @@ public class EntretienDAO {
                 rs.getDouble("cout"),
                 rs.getString("description")
         );
+        entretien.setEtatIntervention(rs.getString("etat_intervention"));
+        return entretien;
     }
 }

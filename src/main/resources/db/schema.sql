@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS vehicules (
     kilometrage      INT NOT NULL DEFAULT 0,
     statut           VARCHAR(20) NOT NULL DEFAULT 'Disponible'
                      CHECK (statut IN ('Disponible', 'En service', 'En entretien', 'Hors service')),
+    statut_avant_entretien VARCHAR(20),
     date_acquisition VARCHAR(10),
     prix_achat       DOUBLE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS entretiens (
     id_entretien     INT AUTO_INCREMENT PRIMARY KEY,
     id_vehicule      INT NOT NULL,
     type_entretien   VARCHAR(50) NOT NULL,
+    etat_intervention VARCHAR(30) NOT NULL DEFAULT 'Entretien terminé',
     date_entretien   VARCHAR(10) NOT NULL,
     kilometrage      INT,
     cout             DOUBLE,

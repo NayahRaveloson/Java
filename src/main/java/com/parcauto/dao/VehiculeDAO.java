@@ -71,6 +71,30 @@ public class VehiculeDAO {
         }
     }
 
+    public void demarrerReparation(int idVehicule) throws SQLException {
+        String sql = "UPDATE vehicules SET statut_avant_entretien = " +
+                "CASE WHEN statut = 'En entretien' THEN statut_avant_entretien ELSE statut END, " +
+                "statut = 'En entretien' WHERE id_vehicule = ?";
+        Connection conn = DatabaseConnection.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idVehicule);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void libererApresReparation(int idVehicule) throws SQLException {
+        String sql = "UPDATE vehicules SET statut = CASE " +
+                "WHEN statut_avant_entretien = 'Hors service' THEN 'Hors service' " +
+                "WHEN statut_avant_entretien IN ('Disponible', 'En service') THEN 'Disponible' " +
+                "ELSE 'En entretien' END, statut_avant_entretien = NULL " +
+                "WHERE id_vehicule = ? AND statut = 'En entretien'";
+        Connection conn = DatabaseConnection.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idVehicule);
+            stmt.executeUpdate();
+        }
+    }
+
 
     public void synchroniserKilometrageSiSuperieur(int idVehicule, int kilometrageConstate) throws SQLException {
         String sql = "UPDATE vehicules SET kilometrage = ? WHERE id_vehicule = ? AND kilometrage < ?";

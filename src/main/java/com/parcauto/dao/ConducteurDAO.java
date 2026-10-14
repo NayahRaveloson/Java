@@ -84,7 +84,6 @@ public class ConducteurDAO {
         }
     }
 
-    // ----- Méthodes utilitaires privées -----
 
     private void remplirParametres(PreparedStatement stmt, Conducteur c) throws SQLException {
         stmt.setString(1, c.getNom());

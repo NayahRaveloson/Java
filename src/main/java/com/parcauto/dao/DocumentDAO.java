@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +55,11 @@ public class DocumentDAO {
     public List<DocumentAdministratif> getDocumentsAExpirer(int nombreJours) throws SQLException {
         List<DocumentAdministratif> liste = new ArrayList<>();
         String sql = SELECT_BASE +
-                "WHERE date(d.date_expiration) <= date('now', ?) " +
+                "WHERE d.date_expiration <= ? " +
                 "ORDER BY d.date_expiration ASC";
         Connection conn = DatabaseConnection.getConnection();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "+" + nombreJours + " days");
+            stmt.setString(1, LocalDate.now().plusDays(nombreJours).toString());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     liste.add(mapperLigne(rs));

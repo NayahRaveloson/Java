@@ -46,6 +46,7 @@
                     <columns>
                         <TableColumn fx:id="colEntVehicule" text="Véhicule" prefWidth="120" />
                         <TableColumn fx:id="colEntType" text="Type" prefWidth="130" />
+                        <TableColumn fx:id="colEntEtat" text="État" prefWidth="150" />
                         <TableColumn fx:id="colEntDate" text="Date" prefWidth="100" />
                         <TableColumn fx:id="colEntKm" text="Kilométrage" prefWidth="100" />
                         <TableColumn fx:id="colEntCout" text="Coût (Ar)" prefWidth="100" />

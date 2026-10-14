@@ -1,6 +1,7 @@
 package com.parcauto.controller;
 
 import com.parcauto.dao.EntretienDAO;
+import com.parcauto.dao.AffectationDAO;
 import com.parcauto.dao.VehiculeDAO;
 import com.parcauto.model.Entretien;
 import com.parcauto.model.Vehicule;
@@ -23,6 +24,7 @@ public class EntretienFormController {
     @FXML private Label lblTitreFormulaire;
     @FXML private ComboBox<Vehicule> cmbVehicule;
     @FXML private ComboBox<String> cmbType;
+    @FXML private ComboBox<String> cmbEtatIntervention;
     @FXML private DatePicker datePickerDate;
     @FXML private TextField txtKilometrage;
     @FXML private TextField txtCout;
@@ -31,14 +33,23 @@ public class EntretienFormController {
 
     private final EntretienDAO entretienDAO = new EntretienDAO();
     private final VehiculeDAO vehiculeDAO = new VehiculeDAO();
+    private final AffectationDAO affectationDAO = new AffectationDAO();
 
     private Entretien entretienEnCours;
     private boolean sauvegarde = false;
 
     @FXML
     public void initialize() {
+        cmbVehicule.valueProperty().addListener((observable, ancienVehicule, vehiculeSelectionne) ->
+                txtKilometrage.setText(vehiculeSelectionne == null
+                        ? ""
+                        : String.valueOf(vehiculeSelectionne.getKilometrage())));
+
         cmbType.setItems(FXCollections.observableArrayList(
                 "Vidange", "Révision", "Réparation", "Changement de pneus", "Contrôle technique", "Autre"));
+        cmbEtatIntervention.setItems(FXCollections.observableArrayList(
+                "Entretien terminé", "Réparation en cours", "Réparation terminée"));
+        cmbEtatIntervention.getSelectionModel().select("Entretien terminé");
         try {
             cmbVehicule.setItems(FXCollections.observableArrayList(vehiculeDAO.getAll()));
         } catch (SQLException e) {
@@ -72,10 +83,10 @@ public class EntretienFormController {
             }
         }
         cmbType.getSelectionModel().select(entretien.getTypeEntretien());
+        cmbEtatIntervention.getSelectionModel().select(entretien.getEtatIntervention());
         if (entretien.getDateEntretien() != null && !entretien.getDateEntretien().isBlank()) {
             datePickerDate.setValue(LocalDate.parse(entretien.getDateEntretien()));
         }
-        txtKilometrage.setText(entretien.getKilometrage() > 0 ? String.valueOf(entretien.getKilometrage()) : "");
         txtCout.setText(String.valueOf((long) entretien.getCout()));
         txtDescription.setText(entretien.getDescription());
     }
@@ -92,9 +103,12 @@ public class EntretienFormController {
             return;
         }
 
+        int ancienIdVehicule = entretienEnCours == null ? -1 : entretienEnCours.getIdVehicule();
+        String ancienEtat = entretienEnCours == null ? null : entretienEnCours.getEtatIntervention();
         Entretien e = (entretienEnCours == null) ? new Entretien() : entretienEnCours;
         e.setIdVehicule(cmbVehicule.getValue().getIdVehicule());
         e.setTypeEntretien(cmbType.getValue());
+        e.setEtatIntervention(cmbEtatIntervention.getValue());
         e.setDateEntretien(datePickerDate.getValue().toString());
         e.setKilometrage(txtKilometrage.getText().isBlank() ? 0 : Integer.parseInt(txtKilometrage.getText().trim()));
         e.setCout(Double.parseDouble(txtCout.getText().trim()));
@@ -109,6 +123,7 @@ public class EntretienFormController {
             if (e.getKilometrage() > 0) {
                 vehiculeDAO.synchroniserKilometrageSiSuperieur(e.getIdVehicule(), e.getKilometrage());
             }
+            synchroniserStatutVehicule(ancienIdVehicule, ancienEtat, e);
             sauvegarde = true;
             fermer();
         } catch (SQLException ex) {
@@ -116,9 +131,36 @@ public class EntretienFormController {
         }
     }
 
+    private void synchroniserStatutVehicule(int ancienIdVehicule, String ancienEtat, Entretien entretien)
+            throws SQLException {
+        int nouvelIdVehicule = entretien.getIdVehicule();
+        String nouvelEtat = entretien.getEtatIntervention();
+
+        if ("Réparation en cours".equals(nouvelEtat)) {
+            vehiculeDAO.demarrerReparation(nouvelIdVehicule);
+        }
+
+        if ("Réparation en cours".equals(ancienEtat)
+                && (ancienIdVehicule != nouvelIdVehicule || !"Réparation en cours".equals(nouvelEtat))) {
+            libererVehiculeSiPossible(ancienIdVehicule);
+        }
+
+        if ("Réparation terminée".equals(nouvelEtat)) {
+            libererVehiculeSiPossible(nouvelIdVehicule);
+        }
+    }
+
+    private void libererVehiculeSiPossible(int idVehicule) throws SQLException {
+        if (entretienDAO.compterReparationsEnCours(idVehicule) == 0
+                && !affectationDAO.vehiculeAUneMissionActive(idVehicule)) {
+            vehiculeDAO.libererApresReparation(idVehicule);
+        }
+    }
+
     private String valider() {
         if (cmbVehicule.getValue() == null) return "Veuillez choisir un véhicule.";
         if (cmbType.getValue() == null) return "Veuillez choisir un type d'entretien.";
+        if (cmbEtatIntervention.getValue() == null) return "Veuillez choisir l'état de l'intervention.";
         if (datePickerDate.getValue() == null) return "La date est obligatoire.";
 
         if (datePickerDate.getValue().isAfter(java.time.LocalDate.now())) {

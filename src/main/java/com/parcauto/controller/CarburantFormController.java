@@ -71,7 +71,10 @@ public class CarburantFormController {
         txtCout.setEditable(false);
         txtCout.setFocusTraversable(false);
 
-        cmbVehicule.valueProperty().addListener((obs, ancien, nouveau) -> recalculerQuantiteEtCout());
+        cmbVehicule.valueProperty().addListener((obs, ancien, nouveau) -> {
+            txtKilometrage.setText(nouveau == null ? "" : String.valueOf(nouveau.getKilometrage()));
+            recalculerQuantiteEtCout();
+        });
         cmbNiveauPlein.valueProperty().addListener((obs, ancien, nouveau) -> recalculerQuantiteEtCout());
         txtQuantite.textProperty().addListener((obs, ancien, nouveau) -> recalculerCoutSeul());
     }
@@ -104,7 +107,6 @@ public class CarburantFormController {
             txtQuantite.setEditable(true);
             txtQuantite.setText(formaterNombre(carburant.getQuantiteLitres()));
             txtCout.setText(String.valueOf((long) carburant.getCout()));
-            txtKilometrage.setText(carburant.getKilometrage() > 0 ? String.valueOf(carburant.getKilometrage()) : "");
         } finally {
             chargementEnCours = false;
         }

@@ -1,5 +1,6 @@
 package com.parcauto.controller;
 
+import com.parcauto.dao.AffectationDAO;
 import com.parcauto.dao.DocumentDAO;
 import com.parcauto.dao.VehiculeDAO;
 import com.parcauto.model.DocumentAdministratif;
@@ -28,6 +29,7 @@ public class DashboardController {
 
     private final VehiculeDAO vehiculeDAO = new VehiculeDAO();
     private final DocumentDAO documentDAO = new DocumentDAO();
+    private final AffectationDAO affectationDAO = new AffectationDAO();
 
     @FXML
     public void initialize() {
@@ -40,12 +42,13 @@ public class DashboardController {
             int total = vehiculeDAO.compterTous();
             int disponibles = vehiculeDAO.compterParStatut("Disponible");
             int enService = vehiculeDAO.compterParStatut("En service");
+            int missionsActives = affectationDAO.compterMissionsActives();
             int enEntretien = vehiculeDAO.compterParStatut("En entretien");
             int horsService = vehiculeDAO.compterParStatut("Hors service");
 
             lblTotalVehicules.setText(String.valueOf(total));
             lblDisponibles.setText(String.valueOf(disponibles));
-            lblEnService.setText(String.valueOf(enService));
+            lblEnService.setText(String.valueOf(missionsActives));
             lblEnEntretien.setText(String.valueOf(enEntretien));
 
             pieChartStatuts.getData().clear();

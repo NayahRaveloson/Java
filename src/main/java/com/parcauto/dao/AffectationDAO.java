@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +70,37 @@ public class AffectationDAO {
         }
     }
 
+    public int compterMissionsActives() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM affectations " +
+                "WHERE date_debut <= ? AND (date_fin IS NULL OR date_fin >= ?)";
+        Connection conn = DatabaseConnection.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String aujourdHui = LocalDate.now().toString();
+            stmt.setString(1, aujourdHui);
+            stmt.setString(2, aujourdHui);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        }
+    }
+
+    public boolean vehiculeAUneMissionActive(int idVehicule) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM affectations WHERE id_vehicule = ? " +
+                "AND date_debut <= ? AND (date_fin IS NULL OR date_fin >= ?)";
+        Connection conn = DatabaseConnection.getConnection();
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String aujourdHui = LocalDate.now().toString();
+            stmt.setInt(1, idVehicule);
+            stmt.setString(2, aujourdHui);
+            stmt.setString(3, aujourdHui);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
+
     /**
-     * @param idAffectationAIgnorer permet d'exclure l'affectation qu'on modifie (peut être null)
+     * @param idAffectationAIgnorer 
      */
     public boolean vehiculeADejaUneAffectationSurPeriode(int idVehicule, String nouvelleDateDebut,
                                                           String nouvelleDateFin, Integer idAffectationAIgnorer) throws SQLException {

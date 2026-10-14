@@ -7,6 +7,7 @@ public class Entretien {
     private int idVehicule;
     private String immatriculationVehicule; 
     private String typeEntretien;
+    private String etatIntervention = "Entretien terminé";
     private String dateEntretien;
     private int kilometrage;
     private double cout;
@@ -59,6 +60,14 @@ public class Entretien {
 
     public void setTypeEntretien(String typeEntretien) {
         this.typeEntretien = typeEntretien;
+    }
+
+    public String getEtatIntervention() {
+        return etatIntervention;
+    }
+
+    public void setEtatIntervention(String etatIntervention) {
+        this.etatIntervention = etatIntervention;
     }
 
     public String getDateEntretien() {

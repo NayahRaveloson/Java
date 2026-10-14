@@ -1,7 +1,9 @@
 package com.parcauto.controller;
 
 import com.parcauto.dao.CarburantDAO;
+import com.parcauto.dao.AffectationDAO;
 import com.parcauto.dao.EntretienDAO;
+import com.parcauto.dao.VehiculeDAO;
 import com.parcauto.model.Carburant;
 import com.parcauto.model.Entretien;
 import javafx.collections.FXCollections;
@@ -27,6 +29,7 @@ public class EntretienCarburantController {
     @FXML private TableView<Entretien> tableEntretiens;
     @FXML private TableColumn<Entretien, String> colEntVehicule;
     @FXML private TableColumn<Entretien, String> colEntType;
+    @FXML private TableColumn<Entretien, String> colEntEtat;
     @FXML private TableColumn<Entretien, String> colEntDate;
     @FXML private TableColumn<Entretien, Integer> colEntKm;
     @FXML private TableColumn<Entretien, Double> colEntCout;
@@ -42,6 +45,8 @@ public class EntretienCarburantController {
 
     private final EntretienDAO entretienDAO = new EntretienDAO();
     private final CarburantDAO carburantDAO = new CarburantDAO();
+    private final VehiculeDAO vehiculeDAO = new VehiculeDAO();
+    private final AffectationDAO affectationDAO = new AffectationDAO();
 
     private final ObservableList<Entretien> donneesEntretiens = FXCollections.observableArrayList();
     private final ObservableList<Carburant> donneesCarburant = FXCollections.observableArrayList();
@@ -62,6 +67,7 @@ public class EntretienCarburantController {
     private void configurerColonnesEntretiens() {
         colEntVehicule.setCellValueFactory(new PropertyValueFactory<>("immatriculationVehicule"));
         colEntType.setCellValueFactory(new PropertyValueFactory<>("typeEntretien"));
+        colEntEtat.setCellValueFactory(new PropertyValueFactory<>("etatIntervention"));
         colEntDate.setCellValueFactory(new PropertyValueFactory<>("dateEntretien"));
         colEntKm.setCellValueFactory(new PropertyValueFactory<>("kilometrage"));
         colEntCout.setCellValueFactory(new PropertyValueFactory<>("cout"));
@@ -149,7 +155,14 @@ public class EntretienCarburantController {
         confirmation.showAndWait().ifPresent(reponse -> {
             if (reponse == ButtonType.YES) {
                 try {
+                    boolean reparationEnCours = "Réparation en cours".equals(selection.getEtatIntervention());
+                    int idVehicule = selection.getIdVehicule();
                     entretienDAO.supprimer(selection.getIdEntretien());
+                    if (reparationEnCours
+                            && entretienDAO.compterReparationsEnCours(idVehicule) == 0
+                            && !affectationDAO.vehiculeAUneMissionActive(idVehicule)) {
+                        vehiculeDAO.libererApresReparation(idVehicule);
+                    }
                     rechercherEntretiens();
                     rafraichirTotaux();
                 } catch (SQLException e) {

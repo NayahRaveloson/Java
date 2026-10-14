@@ -118,7 +118,6 @@ public class AffectationFormController {
         }
 
         Vehicule vehiculeChoisi = cmbVehicule.getValue();
-        boolean seraActive = (datePickerFin.getValue() == null);
 
         Affectation a = (affectationEnCours == null) ? new Affectation() : affectationEnCours;
         a.setIdVehicule(vehiculeChoisi.getIdVehicule());
@@ -134,7 +133,7 @@ public class AffectationFormController {
                 affectationDAO.modifier(a);
             }
 
-            synchroniserStatutVehicule(vehiculeChoisi.getIdVehicule(), seraActive);
+            synchroniserStatutVehicule(vehiculeChoisi.getIdVehicule());
 
             sauvegarde = true;
             fermer();
@@ -143,17 +142,12 @@ public class AffectationFormController {
         }
     }
 
-    private void synchroniserStatutVehicule(int idNouveauVehicule, boolean seraActive) throws SQLException {
+    private void synchroniserStatutVehicule(int idNouveauVehicule) throws SQLException {
         if (affectationEnCours != null && etaitActiveAvantModification && idVehiculeAvantModification != idNouveauVehicule) {
             vehiculeDAO.modifierStatut(idVehiculeAvantModification, "Disponible");
         }
 
-        if (seraActive) {
-            vehiculeDAO.modifierStatut(idNouveauVehicule, "En service");
-        } else if (affectationEnCours == null) {
-        } else if (etaitActiveAvantModification) {
-            vehiculeDAO.modifierStatut(idNouveauVehicule, "Disponible");
-        }
+
     }
 
     private String valider() {
@@ -187,18 +181,18 @@ public class AffectationFormController {
             }
         }
 
-        boolean seraActive = (datePickerFin.getValue() == null);
         Vehicule vehiculeChoisi = cmbVehicule.getValue();
         Conducteur conducteurChoisi = cmbConducteur.getValue();
         Integer idAIgnorer = (affectationEnCours != null) ? affectationEnCours.getIdAffectation() : null;
         String nouvelleDateDebut = debut.toString();
         String nouvelleDateFin = datePickerFin.getValue() != null ? datePickerFin.getValue().toString() : null;
 
-        if (seraActive) {
-            String statutVehicule = vehiculeChoisi.getStatut();
-            if ("En entretien".equals(statutVehicule) || "Hors service".equals(statutVehicule)) {
-                return "Ce véhicule est actuellement \"" + statutVehicule + "\" et ne peut pas être affecté.";
-            }
+        String statutVehicule = vehiculeChoisi.getStatut();
+
+        if ("En entretien".equals(statutVehicule)
+                || "Hors service".equals(statutVehicule)) {
+            return "Ce véhicule est actuellement " + statutVehicule
+                    + " et ne peut pas être affecté.";
         }
 
         try {

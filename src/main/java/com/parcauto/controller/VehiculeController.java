@@ -39,7 +39,7 @@ public class VehiculeController {
         configurerColonnes();
         configurerFiltreStatut();
         configurerRecherche();
-        chargerDonnees();
+        appliquerFiltres();
     }
 
     private void configurerColonnes() {
@@ -105,10 +105,6 @@ public class VehiculeController {
         } catch (SQLException e) {
             afficherErreur("Erreur lors du chargement des véhicules.", e);
         }
-    }
-
-    private void chargerDonnees() {
-        appliquerFiltres();
     }
 
     @FXML
