@@ -17,7 +17,7 @@
       fx:controller="com.parcauto.controller.VehiculeFormController">
 
     <Label fx:id="lblTitreFormulaire" text="Ajouter un véhicule" styleClass="form-section-title" style="-fx-font-size: 20px;" />
-    <Label text="Les champs marqués * sont obligatoires. Le statut est géré automatiquement (Disponible à la création, puis mis à jour par les affectations)." wrapText="true" style="-fx-text-fill: #686868; -fx-font-size: 13px;" />
+    <Label text="(*) Champs obligatoires." wrapText="true" style="-fx-text-fill: #686868; -fx-font-size: 13px;" />
 
     <GridPane hgap="16" vgap="12">
         <columnConstraints>

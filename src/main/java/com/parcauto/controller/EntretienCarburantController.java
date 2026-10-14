@@ -87,7 +87,7 @@ public class EntretienCarburantController {
                     : entretienDAO.rechercher(motCle.trim());
             donneesEntretiens.setAll(resultat);
         } catch (SQLException e) {
-            afficherErreur("Erreur lors du chargement des entretiens.", e);
+            afficherErreur("Erreur lors du chargement des entretiens", e);
         }
     }
 
@@ -106,7 +106,7 @@ public class EntretienCarburantController {
     public void ouvrirFormulaireModificationEntretien() {
         Entretien selection = tableEntretiens.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            afficherAvertissement("Veuillez sélectionner un entretien à modifier.");
+            afficherAvertissement("Veuillez sélectionner un entretien à modifier");
             return;
         }
         ouvrirFormulaireEntretien(selection);
@@ -131,7 +131,7 @@ public class EntretienCarburantController {
                 rafraichirTotaux();
             }
         } catch (Exception e) {
-            afficherErreur("Impossible d'ouvrir le formulaire entretien.", e);
+            afficherErreur("Impossible d'ouvrir le formulaire entretien", e);
         }
     }
 
@@ -139,7 +139,7 @@ public class EntretienCarburantController {
     public void supprimerEntretien() {
         Entretien selection = tableEntretiens.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            afficherAvertissement("Veuillez sélectionner un entretien à supprimer.");
+            afficherAvertissement("Veuillez sélectionner un entretien à supprimer");
             return;
         }
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
@@ -153,7 +153,7 @@ public class EntretienCarburantController {
                     rechercherEntretiens();
                     rafraichirTotaux();
                 } catch (SQLException e) {
-                    afficherErreur("Impossible de supprimer cet entretien.", e);
+                    afficherErreur("Impossible de supprimer cet entretien", e);
                 }
             }
         });

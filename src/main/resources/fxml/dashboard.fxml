@@ -12,7 +12,6 @@
             fx:controller="com.parcauto.controller.DashboardController">
     <VBox spacing="20">
 
-        <!-- ===================== CARTES KPI ===================== -->
         <HBox spacing="16">
             <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <Label text="TOTAL VÉHICULES" styleClass="kpi-title" />
@@ -36,13 +35,11 @@
             </VBox>
         </HBox>
 
-        <!-- ===================== BANNIÈRE D'ALERTE ===================== -->
         <VBox fx:id="alertBox" styleClass="alert-banner-danger" spacing="4" managed="false" visible="false">
             <Label fx:id="lblAlerteTitre" text="Documents à surveiller" style="-fx-font-weight: bold; -fx-text-fill: #202020;" />
             <Label fx:id="lblAlerteDetail" text="" wrapText="true" style="-fx-text-fill: #303030; -fx-font-size: 14px;" />
         </VBox>
 
-        <!-- ===================== GRAPHIQUE + LISTE DOCUMENTS ===================== -->
         <HBox spacing="16">
             <VBox styleClass="card-panel" spacing="8" HBox.hgrow="ALWAYS" maxWidth="Infinity">
                 <Label text="Répartition des statuts de la flotte" styleClass="section-title" />

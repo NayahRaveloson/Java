@@ -68,8 +68,8 @@ public class DashboardController {
                 Label vide = new Label("Aucun document à échéance proche. Tout est en règle ");
                 vide.setStyle("-fx-text-fill: #686868; -fx-font-size: 14px;");
                 documentsAlertBox.getChildren().add(vide);
-                alertBox.setVisible(false);
-                alertBox.setManaged(false);
+                alertBox.setVisible(true);
+                alertBox.setManaged(true);
                 return;
             }
 
@@ -80,7 +80,7 @@ public class DashboardController {
             alertBox.setVisible(true);
             alertBox.setManaged(true);
             lblAlerteTitre.setText(documents.size() + " document(s) à surveiller");
-            lblAlerteDetail.setText(expires + " déjà expiré(s) — consultez l'onglet \"Documents administratifs\" pour les renouveler.");
+            lblAlerteDetail.setText(expires + " déjà expiré(s), consultez l'onglet \"Documents administratifs\" pour les renouveler.");
 
             for (DocumentAdministratif doc : documents) {
                 VBox ligne = new VBox(2);

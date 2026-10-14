@@ -17,7 +17,7 @@
       fx:controller="com.parcauto.controller.AffectationFormController">
 
     <Label fx:id="lblTitreFormulaire" text="Nouvelle affectation" styleClass="form-section-title" style="-fx-font-size: 20px;" />
-    <Label text="Les champs marqués * sont obligatoires." style="-fx-text-fill: #686868; -fx-font-size: 13px;" />
+    <Label text="(*) Champs obligatoires." style="-fx-text-fill: #686868; -fx-font-size: 12px;" />
 
     <GridPane hgap="16" vgap="12">
         <columnConstraints>

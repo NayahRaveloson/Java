@@ -13,7 +13,6 @@
             fx:controller="com.parcauto.controller.MainController"
             stylesheets="@../css/style.css">
 
-    <!-- ===================== SIDEBAR ===================== -->
     <left>
         <VBox styleClass="sidebar" spacing="4">
             <padding>
@@ -38,7 +37,6 @@
         </VBox>
     </left>
 
-    <!-- ===================== BARRE DU HAUT ===================== -->
     <top>
         <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="8">
             <VBox>
@@ -48,7 +46,6 @@
         </HBox>
     </top>
 
-    <!-- ===================== CONTENU DYNAMIQUE ===================== -->
     <center>
         <StackPane fx:id="contentArea" styleClass="content-area" />
     </center>

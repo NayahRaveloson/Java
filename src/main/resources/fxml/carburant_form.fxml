@@ -17,7 +17,7 @@
       fx:controller="com.parcauto.controller.CarburantFormController">
 
     <Label fx:id="lblTitreFormulaire" text="Ajouter un plein" styleClass="form-section-title" style="-fx-font-size: 20px;" />
-    <Label text="Les champs marqués * sont obligatoires." style="-fx-text-fill: #686868; -fx-font-size: 13px;" />
+    <Label text="(*) Champs obligatoires." style="-fx-text-fill: #686868; -fx-font-size: 12px;" />
 
     <GridPane hgap="16" vgap="12">
         <columnConstraints>
@@ -40,12 +40,9 @@
         <Label text="Quantité (litres) *" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0" />
         <TextField fx:id="txtQuantite" promptText="Suggérée automatiquement" GridPane.rowIndex="5" GridPane.columnIndex="0" />
 
-        <Label text="Coût (Ar) — calculé automatiquement" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+        <Label text="Coût (Ar) : calculé automatiquement" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="1" />
         <TextField fx:id="txtCout" styleClass="field-calculated" promptText="Calculé automatiquement" GridPane.rowIndex="5" GridPane.columnIndex="1" />
     </GridPane>
-
-    <Label text="La quantité est suggérée selon le type de véhicule et le niveau choisi (modifiable via « Personnalisé ») ; le coût est toujours recalculé automatiquement."
-           wrapText="true" style="-fx-text-fill: #686868; -fx-font-size: 13px;" />
 
     <Label fx:id="lblErreur" text="" wrapText="true" style="-fx-text-fill: #202020; -fx-font-size: 14px; -fx-font-weight: bold;" />
 

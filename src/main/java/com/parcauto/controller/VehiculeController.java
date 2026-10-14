@@ -127,7 +127,7 @@ public class VehiculeController {
     public void ouvrirFormulaireModification() {
         Vehicule selection = tableVehicules.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            afficherAvertissement("Veuillez sélectionner un véhicule à modifier.");
+            afficherAvertissement("Veuillez sélectionner un véhicule à modifier");
             return;
         }
         ouvrirFormulaire(selection);
@@ -151,7 +151,7 @@ public class VehiculeController {
                 appliquerFiltres();
             }
         } catch (Exception e) {
-            afficherErreur("Impossible d'ouvrir le formulaire véhicule.", e);
+            afficherErreur("Impossible d'ouvrir le formulaire véhicule", e);
         }
     }
 
@@ -159,13 +159,13 @@ public class VehiculeController {
     public void supprimerVehicule() {
         Vehicule selection = tableVehicules.getSelectionModel().getSelectedItem();
         if (selection == null) {
-            afficherAvertissement("Veuillez sélectionner un véhicule à supprimer.");
+            afficherAvertissement("Veuillez sélectionner un véhicule à supprimer");
             return;
         }
 
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
                 "Supprimer le véhicule " + selection.getImmatriculation() + " ?\n" +
-                "Ses affectations, entretiens, pleins et documents liés seront aussi supprimés.",
+                "Ses affectations, entretiens, pleins et documents liés seront aussi supprimés",
                 ButtonType.YES, ButtonType.NO);
         confirmation.setHeaderText("Confirmation de suppression");
         confirmation.showAndWait().ifPresent(reponse -> {
@@ -174,7 +174,7 @@ public class VehiculeController {
                     vehiculeDAO.supprimer(selection.getIdVehicule());
                     appliquerFiltres();
                 } catch (SQLException e) {
-                    afficherErreur("Impossible de supprimer ce véhicule.", e);
+                    afficherErreur("Impossible de supprimer ce véhicule", e);
                 }
             }
         });

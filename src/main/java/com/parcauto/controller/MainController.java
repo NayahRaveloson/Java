@@ -61,7 +61,7 @@ public class MainController {
     @FXML
     public void afficherDocuments() {
         chargerEcran("/fxml/document_list.fxml", btnDocuments,
-                "Documents administratifs", "Suivi des échéances (assurance, contrôle technique...)");
+                "Documents administratifs", "Suivi des échéances ");
     }
 
 

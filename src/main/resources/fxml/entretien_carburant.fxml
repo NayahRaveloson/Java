@@ -14,7 +14,6 @@
 <VBox spacing="16" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.parcauto.controller.EntretienCarburantController">
 
-    <!-- ===================== CARTES RÉSUMÉ ===================== -->
     <HBox spacing="16">
         <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" maxWidth="Infinity">
             <Label text="COÛT TOTAL ENTRETIENS" styleClass="kpi-title" />
@@ -32,7 +31,6 @@
 
     <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
 
-        <!-- ===================== ONGLET ENTRETIENS ===================== -->
         <Tab text="Entretiens">
             <VBox spacing="14" style="-fx-padding: 12 0 0 0;">
                 <HBox spacing="10" alignment="CENTER_LEFT">
@@ -57,7 +55,6 @@
             </VBox>
         </Tab>
 
-        <!-- ===================== ONGLET CARBURANT ===================== -->
         <Tab text="Carburant">
             <VBox spacing="14" style="-fx-padding: 12 0 0 0;">
                 <HBox spacing="10" alignment="CENTER_LEFT">
